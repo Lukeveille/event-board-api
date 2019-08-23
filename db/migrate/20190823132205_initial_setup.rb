@@ -13,6 +13,7 @@ class InitialSetup < ActiveRecord::Migration[5.2]
       t.integer :user_id
       t.integer :category_id
       t.string :name
+      t.integer :limit
       t.datetime :start
       t.datetime :end
       t.float :lat
