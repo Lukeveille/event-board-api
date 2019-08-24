@@ -3,7 +3,6 @@ class AttendingsController < ApplicationController
 
   # POST /attendings
   def create
-    puts "made it this far"
     @attending = Attending.new(attending_params)
 
     if @attending.save
