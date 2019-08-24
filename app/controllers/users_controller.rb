@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
+  wrap_parameters :user, include: [:email, :password, :first_name, :last_name]
 
   # GET /users/1
   def show

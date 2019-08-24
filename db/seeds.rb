@@ -1,4 +1,5 @@
 Category.destroy_all
+ActiveRecord::Base.connection.reset_pk_sequence!('categories')
 
 categories = ["Tech", "Music", "Social"]
 
