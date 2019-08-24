@@ -54,7 +54,7 @@ class EventsController < ApplicationController
         :end,
         :lat,
         :long,
-        :max_attendance
+        :limit
       )
     end
 end

@@ -22,15 +22,15 @@ class InitialSetup < ActiveRecord::Migration[5.2]
       t.timestamps 
     end
 
-    create_table :attending do |t|
-      t.integer :user_id
-      t.integer :event_id
-    
-      t.timestamps      
-    end
-
     create_table :categories do |t|
       t.string :name
+    end
+    
+    create_table :attendings do |t|
+      t.integer :user_id
+      t.integer :event_id
+
+      t.timestamps
     end
   end
 end

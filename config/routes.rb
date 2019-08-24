@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   scope '/api' do
+    resources :users, except: [:index]
     resources :events
-    resources :users
+    resources :attendings, only: [:create, :destroy]
   end
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
