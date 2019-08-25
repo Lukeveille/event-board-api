@@ -2,9 +2,13 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   wrap_parameters :user, include: [:email, :password, :first_name, :last_name]
 
-  # GET /users/1
+  # POST /login
   def show
-    render json: @user
+    if @user.authenticate(params[:password])
+      render json: @user, status: :authenticated, location: @user
+    else
+      render json: { error: 'Unauthorized', status: 401 }, status: :unauthorized
+    end
   end
 
   # POST /users
@@ -35,7 +39,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.find_by(email: params[:email])
     end
 
     # Only allow a trusted parameter "white list" through.
