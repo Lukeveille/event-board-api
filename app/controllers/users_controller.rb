@@ -1,15 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  skip_before_action :authenticate_request, only: [:create]
+  before_action :set_user, only: [:update, :destroy]
   wrap_parameters :user, include: [:email, :password, :first_name, :last_name]
-
-  # POST /login
-  def show
-    if @user.authenticate(params[:password])
-      render json: @user, status: :authenticated, location: @user
-    else
-      render json: { error: 'Unauthorized', status: 401 }, status: :unauthorized
-    end
-  end
 
   # POST /users
   def create
@@ -33,16 +25,19 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+
+    if @user.authenticate(user_params[:password]) && params[:id].to_i == current_user.id.to_i
+      @user.destroy
+    else
+      render json: { error: 'Unauthorized' }, status: :unauthorized
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find_by(email: params[:email])
+      @user = User.find(current_user.id)
     end
 
-    # Only allow a trusted parameter "white list" through.
     def user_params
       params.fetch(:user, {}).permit(
         :first_name,

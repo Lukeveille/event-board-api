@@ -3,10 +3,13 @@ class AttendingsController < ApplicationController
 
   # POST /attendings
   def create
-    @attending = Attending.new(attending_params)
-
+    puts attending_params
+    attend = { 'user_id' => current_user.id }
+    attend = attending_params.merge(attend)
+    @attending = Attending.new(attend)
+    
     if @attending.save
-      render json: @attending, status: :created, location: @attending
+      render json: @attending, status: :created
     else
       render json: @attending.errors, status: :unprocessable_entity
     end
@@ -14,13 +17,17 @@ class AttendingsController < ApplicationController
 
   # DELETE /attendings/1
   def destroy
-    @attending.destroy
+    if @attending
+      @attending.destroy
+    else
+      render json: { error: 'Not Found', status: 404 }, status: :not_found
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_attending
-      @attending = Attending.find(params[:id])
+      @attending = Attending.find_by(user_id: current_user.id, event_id: attending_params[:event_id])
     end
 
     # Only allow a trusted parameter "white list" through.
