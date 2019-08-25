@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     put '/users' => 'users#update'
     resources :users, except: [:index, :show, :create, :update]
     resources :events
-    resources :attendings, only: [:create], as: :attending
+    resources :attendings, only: [:index, :show, :create]
     delete '/attendings' => 'attendings#destroy'
   end
 end
