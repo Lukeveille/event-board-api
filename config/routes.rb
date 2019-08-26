@@ -7,5 +7,6 @@ Rails.application.routes.draw do
     resources :events
     resources :attendings, only: [:index, :show, :create]
     delete '/attendings' => 'attendings#destroy'
+    get 's3/direct_post' => 's3#direct_post'
   end
 end

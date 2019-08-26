@@ -55,6 +55,7 @@ class EventsController < ApplicationController
       params.fetch(:event, {}).permit(
         :user_id,
         :category_id,
+        :image_link,
         :name,
         :start,
         :end,

@@ -8,6 +8,7 @@ gem 'rails', '~> 5.2.3'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 gem 'dotenv-rails'
+gem 'aws-sdk-s3'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -28,7 +29,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'active_model_serializers'
 # gem 'bcrypt'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
+gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
