@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:update, :destroy]
   wrap_parameters :user, include: [:email, :password, :first_name, :last_name]
 
-  # POST /users
+  # POST /signup
   def create
     @user = User.new(user_params)
 

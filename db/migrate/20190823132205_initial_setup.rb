@@ -17,8 +17,8 @@ class InitialSetup < ActiveRecord::Migration[5.2]
       t.integer :limit
       t.datetime :start
       t.datetime :end
-      t.float :lat
-      t.float :long
+      t.decimal :lat, precision: 10, scale: 6
+      t.decimal :long, precision: 10, scale: 6
       
       t.timestamps 
     end

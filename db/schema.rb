@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(version: 2019_08_23_132205) do
     t.integer "limit"
     t.datetime "start"
     t.datetime "end"
-    t.float "lat"
-    t.float "long"
+    t.decimal "lat", precision: 10, scale: 6
+    t.decimal "long", precision: 10, scale: 6
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

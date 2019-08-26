@@ -26,7 +26,7 @@ class EventsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /events/1
+  # PUT /events/1
   def update
     if @event.update(event_params)
       render json: @event
@@ -41,27 +41,28 @@ class EventsController < ApplicationController
   end
 
   private
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    def check_user
-      if @event.user != current_user
-        render json: { error: 'Unauthorized' }, status: :unauthorized
-      end
-    end
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    def event_params
-      params.fetch(:event, {}).permit(
-        :user_id,
-        :category_id,
-        :image_link,
-        :name,
-        :start,
-        :end,
-        :lat,
-        :long,
-        :limit
-      )
+  def check_user
+    if @event.user != current_user
+      render json: { error: 'Unauthorized' }, status: :unauthorized
     end
+  end
+
+  def event_params
+    params.fetch(:event, {}).permit(
+      :user_id,
+      :category_id,
+      :image_link,
+      :name,
+      :start,
+      :end,
+      :lat,
+      :long,
+      :limit
+    )
+  end
 end
