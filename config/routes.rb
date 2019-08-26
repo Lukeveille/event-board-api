@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       put '/users' => 'users#update'
       resources :users, except: [:index, :show, :create, :update]
       resources :events
-      resources :attendings, only: [:index, :show, :create]
+      resources :attendings, only: [:create]
       delete '/attendings' => 'attendings#destroy'
       get 's3/direct_post' => 's3#direct_post'
     end

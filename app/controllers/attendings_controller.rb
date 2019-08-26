@@ -1,26 +1,5 @@
 class AttendingsController < ApplicationController
   before_action :set_attending, only: [:destroy]
-  
-  # helper method for GET
-  def attending_list(list, param)
-    array = []
-    list.each do |hash|
-      array.push(hash[param])
-    end
-    return array
-  end
-
-  # GET /attendings for current user
-  def index
-    user_events = Event.find(attending_list(User.find(current_user.id).attendings, 'event_id'))
-    render json: user_events, status: :ok
-  end
-
-  # GET /attendings/1
-  def show
-    users_attending = User.find(attending_list(Event.find(params[:id]).attendings, 'user_id'))
-    render json: users_attending, status: :ok
-  end
 
   # POST /attendings
   def create
