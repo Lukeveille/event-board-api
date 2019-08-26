@@ -7,17 +7,19 @@ class AttendingsController < ApplicationController
     list.each do |hash|
       array.push(hash[param])
     end
-    render json: array
+    return array
   end
 
   # GET /attendings
   def index
-    attending_list(User.find(current_user.id).attendings, 'event_id')
+    user_events = Event.find(attending_list(User.find(current_user.id).attendings, 'event_id'))
+    render json: user_events, status: :ok
   end
 
   # GET /attendings/1
   def show
-    attending_list(Event.find(params[:id]).attendings, 'user_id')
+    users_attending = User.find(attending_list(Event.find(params[:id]).attendings, 'user_id'))
+    render json: users_attending, status: :ok
   end
 
   # POST /attendings
