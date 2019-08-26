@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2019_08_23_132205) do
     t.integer "user_id"
     t.integer "category_id"
     t.string "name"
+    t.text "description"
     t.string "image_link"
     t.integer "limit"
     t.datetime "start"

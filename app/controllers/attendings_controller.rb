@@ -10,7 +10,7 @@ class AttendingsController < ApplicationController
     return array
   end
 
-  # GET /attendings
+  # GET /attendings for current user
   def index
     user_events = Event.find(attending_list(User.find(current_user.id).attendings, 'event_id'))
     render json: user_events, status: :ok
