@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:create]
-  before_action :set_user, only: [:update, :destroy]
+  before_action :set_user, only: [:index, :update, :destroy]
   wrap_parameters :user, include: [:email, :password, :first_name, :last_name]
+
+  def index
+    render json: @user, status: :ok
+  end
 
   # POST /signup
   def create
