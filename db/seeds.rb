@@ -51,13 +51,15 @@ more_events.times do |id|
   min = ['00', '30'].sample
   user = rand(0..more_users)+1
 
+  image = 
+
   Event.create(
     name: Faker::Lorem.sentence,
     description: Faker::Lorem.paragraph,
-    image_link: "https://picsum.photos/id/#{rand(20..1000)}/500/300",
+    image_link: "https://picsum.photos/id/#{rand(1..1000)}/500/300",
     category_id: rand(1..3),
     user_id: user,
-    limit: rand(1..20),
+    limit: rand(4..more_users),
     start: "#{year}-#{month}-#{day} #{hour}:#{min}",
     end: "#{year}-#{month}-#{end_day} #{end_hour}:#{min}",
     lat: Faker::Address.latitude,
@@ -72,8 +74,15 @@ end
 
 
 ((more_users + more_events)*2).times do
+  event = {}
+  loop do
+    event = Event.find(rand(1..more_events))
+    break if event.users.length < event.limit
+    puts event.id
+  end
+
   Attending.create(
     user_id: rand(0..more_users)+1,
-    event_id: rand(0..more_events)
+    event_id: event.id
   )
 end
