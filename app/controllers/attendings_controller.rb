@@ -3,15 +3,24 @@ class AttendingsController < ApplicationController
 
   # POST /attendings
   def create
-    puts attending_params
-    attend = { 'user_id' => current_user.id }
-    attend = attending_params.merge(attend)
-    @attending = Attending.new(attend)
+    # puts attending_params['event_id']
+    event = Event.find(attending_params['event_id'])
     
-    if @attending.save
-      render json: @attending, status: :created
+    puts "params"
+    puts event.users.length
+    puts event.limit
+
+    if event.users.length < event.limit
+      attend = { 'user_id' => current_user.id }
+      attend = attending_params.merge(attend)
+      @attending = Attending.new(attend)
+      if @attending.save
+        render json: @attending, status: :created
+      else
+        render json: @attending, status: :unprocessable_entity
+      end
     else
-      render json: @attending.errors, status: :unprocessable_entity
+      render json: {error: 'Event at limit'}, status: :unprocessable_entity
     end
   end
 

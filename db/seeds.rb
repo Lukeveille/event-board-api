@@ -1,12 +1,18 @@
+require 'faker'
+
 Category.destroy_all
-User.destroy_all
-Event.destroy_all
 ActiveRecord::Base.connection.reset_pk_sequence!('categories')
+
+User.destroy_all
 ActiveRecord::Base.connection.reset_pk_sequence!('users')
+
+Event.destroy_all
 ActiveRecord::Base.connection.reset_pk_sequence!('events')
 
-categories = ["Tech", "Music", "Social"]
+Attending.destroy_all
+ActiveRecord::Base.connection.reset_pk_sequence!('attendings')
 
+categories = ["Tech", "Music", "Social"]
 categories.each do |category|
   Category.create(
     name: category
@@ -20,15 +26,54 @@ User.create(
 	last_name: "Leveille"
 )
 
-Event.create(
-  name: "A time and a place",
-  description: "Things happen and it's gonna be awesome",
-  image_link: "d2b7dtg3ypekdu.cloudfront.net/1/c0c3c43f-The+Sun.jpg",
-  category_id: 1,
-  user_id: 1,
-  limit: 10,
-  start: "2019-08-21 00:00:00",
-  end: "2019-08-29 15:30:00",
-  lat: 43.6383698,
-  long: -79.43533409999999
-)
+more_users = 20
+more_events = 30
+
+more_users.times do
+  User.create(
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password,
+    first_name: Faker::Name.name.split[0],
+    last_name: Faker::Name.name.split[1]
+  )
+end
+
+more_events.times do |id|
+  year = rand(2019..2020)
+  month = rand(1..12)
+  month = month < 10? "0#{month}" : month
+  day = rand(1..28)
+  end_day = day + rand(2)
+  day = day < 10? "0#{day}" : day
+  end_day = end_day < 10? "0#{end_day}" : end_day
+  hour = rand(10..19)
+  end_hour = hour + rand(4)
+  min = ['00', '30'].sample
+  user = rand(0..more_users)+1
+
+  Event.create(
+    name: Faker::Lorem.sentence,
+    description: Faker::Lorem.paragraph,
+    image_link: "https://picsum.photos/id/#{rand(20..1000)}/500/300",
+    category_id: rand(1..3),
+    user_id: user,
+    limit: rand(1..20),
+    start: "#{year}-#{month}-#{day} #{hour}:#{min}",
+    end: "#{year}-#{month}-#{end_day} #{end_hour}:#{min}",
+    lat: Faker::Address.latitude,
+    long: Faker::Address.longitude
+  )
+  Attending.create(
+    user_id: user,
+    event_id: id
+  )
+end
+
+
+
+((more_users + more_events)*2).times do
+  Attending.create(
+    user_id: rand(0..more_users)+1,
+    event_id: rand(0..more_events)
+  )
+end
