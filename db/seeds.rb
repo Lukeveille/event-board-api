@@ -51,8 +51,6 @@ more_events.times do |id|
   min = ['00', '30'].sample
   user = rand(0..more_users)+1
 
-  image = 
-
   Event.create(
     name: Faker::Lorem.sentence,
     description: Faker::Lorem.paragraph,
@@ -67,7 +65,7 @@ more_events.times do |id|
   )
   Attending.create(
     user_id: user,
-    event_id: id
+    event_id: id+1
   )
 end
 
@@ -78,7 +76,6 @@ end
   loop do
     event = Event.find(rand(1..more_events))
     break if event.users.length < event.limit
-    puts event.id
   end
 
   Attending.create(

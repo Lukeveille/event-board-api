@@ -3,12 +3,7 @@ class AttendingsController < ApplicationController
 
   # POST /attendings
   def create
-    # puts attending_params['event_id']
     event = Event.find(attending_params['event_id'])
-    
-    puts "params"
-    puts event.users.length
-    puts event.limit
 
     if event.users.length < event.limit
       attend = { 'user_id' => current_user.id }

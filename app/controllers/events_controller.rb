@@ -20,7 +20,17 @@ class EventsController < ApplicationController
     @event = Event.new(new_event)
 
     if @event.save
-      render json: @event, status: :created, location: @event
+      puts current_user.id
+      puts @event.id
+      attending = Attending.new(
+        user_id: current_user.id,
+        event_id: @event.id
+      )
+      if attending.save
+        render json: @event, status: :created, location: @event
+      else
+        render json: attending.errors, status: :unprocessable_entity
+      end
     else
       render json: @event.errors, status: :unprocessable_entity
     end
