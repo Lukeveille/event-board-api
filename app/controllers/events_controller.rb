@@ -57,6 +57,7 @@ class EventsController < ApplicationController
       :user_id,
       :category_id,
       :image_link,
+      :description,
       :name,
       :start,
       :end,
