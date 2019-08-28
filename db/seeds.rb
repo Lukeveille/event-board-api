@@ -38,14 +38,19 @@ more_users.times do
   )
 end
 
+def double_zero(num)
+  num.to_i
+  num < 10? "0#{num}" : num
+end
+
 more_events.times do |id|
   year = rand(2019..2020)
   month = rand(1..12)
-  month = month < 10? "0#{month}" : month
+  month = double_zero(month)
   day = rand(1..28)
   end_day = day + rand(2)
-  day = day < 10? "0#{day}" : day
-  end_day = end_day < 10? "0#{end_day}" : end_day
+  day = double_zero(day)
+  end_day = double_zero(end_day)
   hour = rand(10..19)
   end_hour = hour + rand(4)
   min = ['00', '30'].sample
