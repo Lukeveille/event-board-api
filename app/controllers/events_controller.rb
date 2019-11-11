@@ -20,8 +20,6 @@ class EventsController < ApplicationController
     @event = Event.new(new_event)
 
     if @event.save
-      puts current_user.id
-      puts @event.id
       attending = Attending.new(
         user_id: current_user.id,
         event_id: @event.id
@@ -47,7 +45,17 @@ class EventsController < ApplicationController
 
   # DELETE /events/1
   def destroy
+    s3 = Aws::S3::Client.new.delete_object(
+      bucket: ENV['S3_BUCKET'],
+      key: "#{current_user.id}/#{@event.image_link.split('1%2F')[1]}"
+    )
     @event.destroy
+    
+    return true
+    
+    rescue => e
+      Rails.logger.error "Error deleting #{image}. Failure with S3 call. Details: #{e}; #{e.backtrace}"
+    return false    
   end
 
   private
