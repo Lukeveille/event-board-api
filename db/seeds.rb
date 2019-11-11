@@ -32,7 +32,7 @@ more_events = 30
 more_users.times do
   User.create(
     email: Faker::Internet.unique.email,
-    password: Faker::Internet.password,
+    password: "123456",
     first_name: Faker::Name.name.split[0],
     last_name: Faker::Name.name.split[1]
   )
