@@ -8,4 +8,16 @@ class S3Controller < ApplicationController
     )
     render json: { url: data.url, fields: data.fields }, status: :ok
   end
+
+  def destroy
+    s3 = Aws::S3::Client.new.delete_object(
+      bucket: ENV['S3_BUCKET'],
+      key: "#{current_user.id}/#{params[:filename]}"
+    )
+    return true
+
+    rescue => e
+      Rails.logger.error "Error deleting #{image}. Failure with S3 call. Details: #{e}; #{e.backtrace}"
+    return false
+  end
 end
