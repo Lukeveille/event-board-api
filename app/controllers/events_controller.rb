@@ -47,7 +47,7 @@ class EventsController < ApplicationController
   def destroy
     s3 = Aws::S3::Client.new.delete_object(
       bucket: ENV['S3_BUCKET'],
-      key: "#{current_user.id}/#{@event.image_link.split('1%2F')[1]}"
+      key: "#{current_user.id}/#{set_filename}"
     )
     @event.destroy
     
@@ -59,6 +59,35 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def set_filename
+    filename = @event.image_link.split('1%2F')[1]
+    [
+      ['+', ' '],
+      ['%20', ' '],
+      ['%21', '!'],
+      ['%22', '"'],
+      ['%23', '#'],
+      ['%24', '$'],
+      ['%25', '%'],
+      ['%26', '&'],
+      ['%27', '\''],
+      ['%28', '('],
+      ['%29', ')'],
+      ['%2A', '*'],
+      ['%2B', '+'],
+      ['%2C', ','],
+      ['%2D', '-'],
+      ['%2E', '.'],
+      ['%2F', '/']
+    ].each do |symbol|
+      if filename.include? symbol[0]
+        filename.gsub! symbol[0], symbol[1]
+      end
+    end
+
+    return filename
+  end
 
   def set_event
     @event = Event.find(params[:id])
