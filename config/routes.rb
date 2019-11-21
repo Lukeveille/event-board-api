@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       post '/login' => 'authentication#authenticate'
       put '/users' => 'users#update'
       get '/events/user' => 'events#user'
+      get '/events/attending' => 'events#attending'
+      get '/events/past' => 'events#past'
       resources :users, except: [:show, :create, :update]
       resources :events
       resources :attendings, only: [:create]

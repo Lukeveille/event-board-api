@@ -23,4 +23,8 @@ class Event < ApplicationRecord
     end
     return users
   end
+
+  def total_events
+    return Event.all.where('DATE(start) > ?', Date.today).length
+  end
 end

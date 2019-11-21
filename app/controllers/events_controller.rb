@@ -5,8 +5,9 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    render json: Event.all.order(:start).where('DATE(start) > ?', Date.today)
-    # render json: Event.all.order(:start)
+    offset = params["length"].to_i * params["page"].to_i
+    res = Event.all.order(:start).where('DATE(start) > ?', Date.today).offset(offset).limit(params["length"])
+    render json: res, status: :ok
   end
 
   # GET /events/1
@@ -16,6 +17,14 @@ class EventsController < ApplicationController
 
   def user
     render json: Event.where(:user_id => current_user.id)
+  end
+
+  def attending
+    render json: Event.where(:attendings => current_user.id)
+  end
+
+  def past
+    render json: Event.where('DATE(start) < ?', Date.today)
   end
 
   # POST /events
