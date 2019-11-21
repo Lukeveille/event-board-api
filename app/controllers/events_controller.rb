@@ -5,12 +5,17 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    render json: Event.all
+    render json: Event.all.order(:start).where('DATE(start) > ?', Date.today)
+    # render json: Event.all.order(:start)
   end
 
   # GET /events/1
   def show
     render json: @event
+  end
+
+  def user
+    render json: Event.where(:user_id => current_user.id)
   end
 
   # POST /events
