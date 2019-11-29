@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       get '/events/past' => 'events#past'
       resources :users, except: [:show, :create, :update]
       resources :events
-      resources :attendings, only: [:create]
+      resources :attendings, only: [:index, :create]
       resources :categories, only: [:index]
       delete '/attendings' => 'attendings#destroy'
       get 's3/direct_post' => 's3#direct_post'

@@ -15,18 +15,6 @@ class EventsController < ApplicationController
     render json: @event
   end
 
-  def user
-    render json: Event.where(:user_id => current_user.id)
-  end
-
-  def attending
-    render json: Event.where(:attendings => current_user.id)
-  end
-
-  def past
-    render json: Event.where('DATE(start) < ?', Date.today)
-  end
-
   # POST /events
   def create
     new_event = { 'user_id' => current_user.id }

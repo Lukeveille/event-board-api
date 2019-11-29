@@ -1,6 +1,10 @@
 class AttendingsController < ApplicationController
   before_action :set_attending, only: [:destroy]
 
+  def index
+    render json: Attending.where(:user_id => current_user.id)
+  end
+
   # POST /attendings
   def create
     event = Event.find(attending_params['event_id'])
