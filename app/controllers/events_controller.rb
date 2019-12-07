@@ -6,13 +6,17 @@ class EventsController < ApplicationController
   # GET /events
   def index
     offset = params["length"].to_i * params["page"].to_i
-    res = Event.all.order(:start).where('DATE(start) > ?', Date.today).offset(offset).limit(params["length"])
-    render json: res, status: :ok
+    filtered = params["category"]? Event.all.order(:start).where('category_id = ?', params["category"]) : Event.all.order(:start)
+    upcoming = filtered.where('DATE(start) > ?', Date.today)
+    current_page = upcoming.offset(offset).limit(params["length"])
+    events = ActiveModel::Serializer::ArraySerializer.new(current_page, each_serializer: EventSerializer)
+
+    render json: {events: events, total: upcoming.length}, status: :ok
   end
 
   # GET /events/1
   def show
-    render json: @event
+    render json: @event, serializer: EventSerializer
   end
 
   # POST /events
