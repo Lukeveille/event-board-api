@@ -55,40 +55,44 @@ class EventsController < ApplicationController
       bucket: ENV['S3_BUCKET'],
       key: "#{current_user.id}/#{set_filename}"
     )
+    Attending.where('event_id = ?', @event.id).destroy_all
     @event.destroy
     
     return true
     
     rescue => e
-      Rails.logger.error "Error deleting #{image}. Failure with S3 call. Details: #{e}; #{e.backtrace}"
+      Rails.logger.error "Error deleting #{@event.image_link}. Failure with S3 call. Details: #{e}; #{e.backtrace}"
     return false    
   end
 
   private
 
   def set_filename
-    filename = @event.image_link.split('1%2F')[1]
-    [
-      ['+', ' '],
-      ['%20', ' '],
-      ['%21', '!'],
-      ['%22', '"'],
-      ['%23', '#'],
-      ['%24', '$'],
-      ['%25', '%'],
-      ['%26', '&'],
-      ['%27', '\''],
-      ['%28', '('],
-      ['%29', ')'],
-      ['%2A', '*'],
-      ['%2B', '+'],
-      ['%2C', ','],
-      ['%2D', '-'],
-      ['%2E', '.'],
-      ['%2F', '/']
-    ].each do |symbol|
-      if filename.include? symbol[0]
-        filename.gsub! symbol[0], symbol[1]
+    filename = nil
+    if @event.image_link.include? "cloudfront"
+      filename = @event.image_link.split('%2F')[1]
+      [
+        ['+', ' '],
+        ['%20', ' '],
+        ['%21', '!'],
+        ['%22', '"'],
+        ['%23', '#'],
+        ['%24', '$'],
+        ['%25', '%'],
+        ['%26', '&'],
+        ['%27', '\''],
+        ['%28', '('],
+        ['%29', ')'],
+        ['%2A', '*'],
+        ['%2B', '+'],
+        ['%2C', ','],
+        ['%2D', '-'],
+        ['%2E', '.'],
+        ['%2F', '/']
+      ].each do |symbol|
+        if filename.include? symbol[0]
+          filename.gsub! symbol[0], symbol[1]
+        end
       end
     end
 
