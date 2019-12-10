@@ -13,9 +13,4 @@ class User < ApplicationRecord
   def full_name
     return "#{self.first_name} #{self.last_name}"
   end
-
-  def gravatar_url
-    gravatar_id = Digest::MD5::hexdigest(self.email).downcase
-    "https://gravatar.com/avatar/#{gravatar_id}.png"
-  end
 end
