@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get '/events/user' => 'events#user'
       get '/events/attending' => 'events#attending'
       get '/events/past' => 'events#past'
-      resources :users, except: [:show, :create, :update]
+      resources :users, except: [:show, :create]
       resources :events
       resources :attendings, only: [:index, :create]
       resources :categories, only: [:index]

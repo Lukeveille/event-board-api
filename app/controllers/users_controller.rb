@@ -29,8 +29,9 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-
     if @user.authenticate(user_params[:password]) && params[:id].to_i == current_user.id.to_i
+      Attending.where("user_id = ?", current_user.id).destroy_all
+      Event.where("user_id = ?", current_user.id).destroy_all
       @user.destroy
     else
       render json: { error: 'Unauthorized' }, status: :unauthorized
